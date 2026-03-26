@@ -14,6 +14,8 @@ from .models import (
     TFC,
     Projeto,
     ImagemProjeto,
+    Competencia,
+    Formacao
 )
 
 class EvidenciaMakingOfInline(admin.StackedInline):
@@ -97,3 +99,14 @@ class ProjetoAdmin(admin.ModelAdmin):
 class ImagemProjetoAdmin(admin.ModelAdmin):
     list_display = ('projeto', 'legenda')
     search_fields = ('projeto__nome', 'legenda')
+
+@admin.register(Competencia)
+class CompetenciaAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'nivel', 'tipo')
+    search_fields = ('nome', 'descricao')
+
+
+@admin.register(Formacao)
+class FormacaoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'entidade', 'tipo', 'data_inicio', 'data_fim')
+    search_fields = ('nome', 'entidade', 'tipo')

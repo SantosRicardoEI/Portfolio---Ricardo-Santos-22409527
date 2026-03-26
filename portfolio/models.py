@@ -215,6 +215,51 @@ class ImagemProjeto(models.Model):
 
     def __str__(self):
         return f"Imagem de {self.projeto.nome}"
+    
+
+class Competencia(models.Model):
+    nome = models.CharField(max_length=100, unique=True)
+    descricao = models.TextField(blank=True)
+    nivel = models.PositiveIntegerField(default=3)
+    tipo = models.CharField(max_length=100, blank=True) 
+
+    tecnologias = models.ManyToManyField(
+        Tecnologia,
+        related_name='competencias',
+        blank=True
+    )
+    projetos = models.ManyToManyField(
+        Projeto,
+        related_name='competencias',
+        blank=True
+    )
+
+    def __str__(self):
+        return self.nome
+    
+
+class Formacao(models.Model):
+    nome = models.CharField(max_length=150)
+    entidade = models.CharField(max_length=150)
+    tipo = models.CharField(max_length=100)  # curso, certificação, workshop, etc.
+    descricao = models.TextField(blank=True)
+    data_inicio = models.DateField(blank=True, null=True)
+    data_fim = models.DateField(blank=True, null=True)
+    certificado = models.URLField(blank=True, null=True)
+
+    competencias = models.ManyToManyField(
+        Competencia,
+        related_name='formacoes',
+        blank=True
+    )
+    tecnologias = models.ManyToManyField(
+        Tecnologia,
+        related_name='formacoes',
+        blank=True
+    )
+
+    def __str__(self):
+        return self.nome
 
 
 class MakingOf(models.Model):
