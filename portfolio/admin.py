@@ -12,10 +12,16 @@ from .models import (
     PalavraChave,
     Aluno,
     TFC,
+    Projeto,
+    ImagemProjeto,
 )
 
 class EvidenciaMakingOfInline(admin.StackedInline):
     model = EvidenciaMakingOf
+    extra = 1
+
+class ImagemProjetoInline(admin.StackedInline):
+    model = ImagemProjeto
     extra = 1
 
 @admin.register(MakingOf)
@@ -79,3 +85,15 @@ class AlunoAdmin(admin.ModelAdmin):
 class TFCAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'ano_letivo')
     search_fields = ('titulo', 'resumo')
+
+@admin.register(Projeto)
+class ProjetoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'tipo', 'estado', 'oferta_uc')
+    list_filter = ('tipo', 'estado')
+    search_fields = ('nome', 'descricao_curta', 'descricao_longa')
+    inlines = [ImagemProjetoInline]
+
+@admin.register(ImagemProjeto)
+class ImagemProjetoAdmin(admin.ModelAdmin):
+    list_display = ('projeto', 'legenda')
+    search_fields = ('projeto__nome', 'legenda')

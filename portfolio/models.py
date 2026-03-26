@@ -151,8 +151,72 @@ class TFC(models.Model):
 
     def __str__(self):
         return self.titulo
-
     
+    # Representa um projeto
+class Projeto(models.Model):
+    TIPOS = [
+        ('academico', 'Académico'),
+        ('pessoal', 'Pessoal'),
+        ('profissional', 'Profissional'),
+        ('freelance', 'Freelance'),
+        ('outro', 'Outro'),
+    ]
+
+    ESTADOS = [
+        ('planeado', 'Planeado'),
+        ('em_desenvolvimento', 'Em desenvolvimento'),
+        ('em_producao', 'Em produção'),
+        ('concluido', 'Concluído'),
+        ('pausado', 'Pausado'),
+    ]
+
+    nome = models.CharField(max_length=150)
+    descricao_curta = models.CharField(max_length=255)
+    descricao_longa = models.TextField()
+    imagem_capa = models.ImageField(upload_to='projetos/capas/', blank=True, null=True)
+    tipo = models.CharField(max_length=20, choices=TIPOS)
+    data_inicio = models.DateField(blank=True, null=True)
+    data_fim = models.DateField(blank=True, null=True)
+    repositorio = models.URLField(blank=True, null=True)
+    estado = models.CharField(max_length=25, choices=ESTADOS)
+    objetivo = models.TextField()
+    video_demo = models.URLField(blank=True, null=True)
+    website = models.URLField(blank=True, null=True)
+    papel = models.CharField(max_length=150)
+    conceitos_aplicados = models.TextField(blank=True)
+
+    oferta_uc = models.ForeignKey(
+        OfertaUC,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='projetos'
+    )
+
+    tecnologias = models.ManyToManyField(
+        Tecnologia,
+        related_name='projetos',
+        blank=True
+    )
+
+    def __str__(self):
+        return self.nome
+
+
+# Representa imagens adicionais de um projeto
+class ImagemProjeto(models.Model):
+    projeto = models.ForeignKey(
+        Projeto,
+        on_delete=models.CASCADE,
+        related_name='outras_imagens'
+    )
+    imagem = models.ImageField(upload_to='projetos/imagens/')
+    legenda = models.CharField(max_length=150, blank=True)
+
+    def __str__(self):
+        return f"Imagem de {self.projeto.nome}"
+
+
 class MakingOf(models.Model):
     entidade = models.CharField(max_length=100) 
     titulo = models.CharField(max_length=150)
