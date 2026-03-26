@@ -23,7 +23,44 @@ class Professor(models.Model):
 
     def __str__(self):
         return self.nome
-    
+
+# Representa uma unidade curricular em abstrato
+class UnidadeCurricular(models.Model):
+    nome = models.CharField(max_length=150)
+    sigla = models.CharField(max_length=20, blank=True)
+    descricao = models.TextField(blank=True)
+    ects = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True)
+    imagem = models.ImageField(upload_to='ucs/', blank=True, null=True)
+
+    def __str__(self):
+        return self.nome
+
+
+# Representa a oferta de uma UC num certo curso e ano letivo
+class OfertaUC(models.Model):
+    unidade_curricular = models.ForeignKey(
+        UnidadeCurricular,
+        on_delete=models.CASCADE,
+        related_name='ofertas'
+    )
+    curso = models.ForeignKey(
+        Curso,
+        on_delete=models.CASCADE,
+        related_name='ofertas_uc'
+    )
+    ano_letivo = models.ForeignKey(
+        AnoLetivo,
+        on_delete=models.CASCADE,
+        related_name='ofertas_uc'
+    )
+    docentes = models.ManyToManyField(
+        'Professor',
+        related_name='ofertas_uc',
+        blank=True
+    )
+
+    def __str__(self):
+        return f"{self.unidade_curricular.nome} - {self.curso.nome} - {self.ano_letivo.nome}"
     
 class MakingOf(models.Model):
     entidade = models.CharField(max_length=100) 

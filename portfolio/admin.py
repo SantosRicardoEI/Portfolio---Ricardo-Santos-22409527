@@ -5,6 +5,8 @@ from .models import (
     Professor,
     MakingOf,
     EvidenciaMakingOf,
+    UnidadeCurricular,
+    OfertaUC,
 )
 
 class EvidenciaMakingOfInline(admin.StackedInline):
@@ -32,3 +34,15 @@ class AnoLetivoAdmin(admin.ModelAdmin):
 class ProfessorAdmin(admin.ModelAdmin):
     list_display = ('nome', 'email', 'pagina_pessoal')
     search_fields = ('nome', 'email')
+
+@admin.register(UnidadeCurricular)
+class UnidadeCurricularAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'sigla', 'ects')
+    search_fields = ('nome', 'sigla')
+
+
+@admin.register(OfertaUC)
+class OfertaUCAdmin(admin.ModelAdmin):
+    list_display = ('unidade_curricular', 'curso', 'ano_letivo')
+    list_filter = ('curso', 'ano_letivo')
+    search_fields = ('unidade_curricular__nome', 'curso__nome')
