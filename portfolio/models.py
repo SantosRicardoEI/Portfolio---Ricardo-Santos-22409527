@@ -1,5 +1,6 @@
 from django.db import models
 
+########################## 1. ##########################
 
 # Representa um curso
 class Curso(models.Model):
@@ -23,6 +24,8 @@ class Professor(models.Model):
 
     def __str__(self):
         return self.nome
+    
+########################## 2. ##########################
 
 # Representa uma unidade curricular em abstrato
 class UnidadeCurricular(models.Model):
@@ -34,7 +37,6 @@ class UnidadeCurricular(models.Model):
 
     def __str__(self):
         return self.nome
-
 
 # Representa a oferta de uma UC num certo curso e ano letivo
 class OfertaUC(models.Model):
@@ -62,7 +64,17 @@ class OfertaUC(models.Model):
     def __str__(self):
         return f"{self.unidade_curricular.nome} - {self.curso.nome} - {self.ano_letivo.nome}"
     
-# Representa uma tecnologia
+########################## 3. ##########################
+
+class Competencia(models.Model):
+    nome = models.CharField(max_length=100, unique=True)
+    descricao = models.TextField(blank=True)
+    nivel = models.PositiveIntegerField(default=3)
+    tipo = models.CharField(max_length=100, blank=True) 
+
+    def __str__(self):
+        return self.nome
+
 class Tecnologia(models.Model):
     CATEGORIAS = [
         ('linguagem', 'Linguagem'),
@@ -78,6 +90,12 @@ class Tecnologia(models.Model):
     logo = models.ImageField(upload_to='tecnologias/', blank=True, null=True)
     website_oficial = models.URLField(blank=True, null=True)
     nivel_interesse = models.PositiveIntegerField(default=3)
+
+    competencias = models.ManyToManyField(
+        'Competencia',
+        related_name='tecnologias_relacionadas',
+        blank=True
+    )
 
     def __str__(self):
         return self.nome
@@ -97,7 +115,8 @@ class PalavraChave(models.Model):
     def __str__(self):
         return self.nome
     
-   
+########################## 4. ##########################
+    
 # Representa um aluno
 class Aluno(models.Model):
     nome = models.CharField(max_length=150)
@@ -152,7 +171,9 @@ class TFC(models.Model):
     def __str__(self):
         return self.titulo
     
-    # Representa um projeto
+########################## 5. ##########################
+
+# Representa um projeto
 class Projeto(models.Model):
     TIPOS = [
         ('academico', 'Académico'),
@@ -219,8 +240,7 @@ class Projeto(models.Model):
 
     def __str__(self):
         return self.nome
-
-
+    
 # Representa imagens adicionais de um projeto
 class ImagemProjeto(models.Model):
     projeto = models.ForeignKey(
@@ -235,21 +255,7 @@ class ImagemProjeto(models.Model):
         return f"Imagem de {self.projeto.nome}"
     
 
-class Competencia(models.Model):
-    nome = models.CharField(max_length=100, unique=True)
-    descricao = models.TextField(blank=True)
-    nivel = models.PositiveIntegerField(default=3)
-    tipo = models.CharField(max_length=100, blank=True) 
-
-    tecnologias = models.ManyToManyField(
-        Tecnologia,
-        related_name='competencias',
-        blank=True
-    )
-
-    def __str__(self):
-        return self.nome
-    
+########################## 6. ##########################
 
 class Formacao(models.Model):
     nome = models.CharField(max_length=150)
@@ -274,6 +280,7 @@ class Formacao(models.Model):
     def __str__(self):
         return self.nome
 
+########################## 7. ##########################
 
 class MakingOf(models.Model):
     entidade = models.CharField(max_length=100) 
