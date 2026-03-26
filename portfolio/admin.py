@@ -7,6 +7,9 @@ from .models import (
     EvidenciaMakingOf,
     UnidadeCurricular,
     OfertaUC,
+    Tecnologia,
+    Area,
+    PalavraChave,
 )
 
 class EvidenciaMakingOfInline(admin.StackedInline):
@@ -46,3 +49,19 @@ class OfertaUCAdmin(admin.ModelAdmin):
     list_display = ('unidade_curricular', 'curso', 'ano_letivo')
     list_filter = ('curso', 'ano_letivo')
     search_fields = ('unidade_curricular__nome', 'curso__nome')
+
+@admin.register(Tecnologia)
+class TecnologiaAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'categoria', 'nivel_interesse')
+    list_filter = ('categoria',)
+    search_fields = ('nome',)
+
+
+@admin.register(Area)
+class AreaAdmin(admin.ModelAdmin):
+    search_fields = ('nome',)
+
+
+@admin.register(PalavraChave)
+class PalavraChaveAdmin(admin.ModelAdmin):
+    search_fields = ('nome',)

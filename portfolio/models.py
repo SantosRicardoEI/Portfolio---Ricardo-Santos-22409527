@@ -62,6 +62,42 @@ class OfertaUC(models.Model):
     def __str__(self):
         return f"{self.unidade_curricular.nome} - {self.curso.nome} - {self.ano_letivo.nome}"
     
+# Representa uma tecnologia
+class Tecnologia(models.Model):
+    CATEGORIAS = [
+        ('linguagem', 'Linguagem'),
+        ('framework', 'Framework'),
+        ('bd', 'Base de Dados'),
+        ('ferramenta', 'Ferramenta'),
+        ('outro', 'Outro'),
+    ]
+
+    nome = models.CharField(max_length=100, unique=True)
+    descricao = models.TextField(blank=True)
+    categoria = models.CharField(max_length=20, choices=CATEGORIAS)
+    logo = models.ImageField(upload_to='tecnologias/', blank=True, null=True)
+    website_oficial = models.URLField(blank=True, null=True)
+    nivel_interesse = models.PositiveIntegerField(default=3)
+
+    def __str__(self):
+        return self.nome
+    
+# Representa uma área
+class Area(models.Model):
+    nome = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.nome
+
+
+# Representa uma palavra-chave
+class PalavraChave(models.Model):
+    nome = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.nome
+
+    
 class MakingOf(models.Model):
     entidade = models.CharField(max_length=100) 
     titulo = models.CharField(max_length=150)
