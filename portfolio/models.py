@@ -96,6 +96,61 @@ class PalavraChave(models.Model):
 
     def __str__(self):
         return self.nome
+    
+   
+# Representa um aluno
+class Aluno(models.Model):
+    nome = models.CharField(max_length=150)
+    email = models.EmailField(blank=True)
+
+    def __str__(self):
+        return self.nome
+    
+# Representa um trabalho final de curso
+class TFC(models.Model):
+    titulo = models.CharField(max_length=255)
+    tipo = models.CharField(max_length=50, default='TFC')
+    resumo = models.TextField()
+    link_relatorio = models.URLField(blank=True, null=True)
+    ano_letivo = models.ForeignKey(
+        AnoLetivo,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='tfcs'
+    )
+
+    alunos = models.ManyToManyField(
+        Aluno,
+        related_name='tfcs'
+    )
+    orientadores = models.ManyToManyField(
+        Professor,
+        related_name='tfcs_orientados',
+        blank=True
+    )
+    cursos = models.ManyToManyField(
+        Curso,
+        related_name='tfcs'
+    )
+    areas = models.ManyToManyField(
+        Area,
+        related_name='tfcs',
+        blank=True
+    )
+    tecnologias = models.ManyToManyField(
+        Tecnologia,
+        related_name='tfcs',
+        blank=True
+    )
+    palavras_chave = models.ManyToManyField(
+        PalavraChave,
+        related_name='tfcs',
+        blank=True
+    )
+
+    def __str__(self):
+        return self.titulo
 
     
 class MakingOf(models.Model):
@@ -125,3 +180,4 @@ class EvidenciaMakingOf(models.Model):
 
     def __str__(self):
         return self.titulo
+ 

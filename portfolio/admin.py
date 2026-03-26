@@ -10,6 +10,8 @@ from .models import (
     Tecnologia,
     Area,
     PalavraChave,
+    Aluno,
+    TFC,
 )
 
 class EvidenciaMakingOfInline(admin.StackedInline):
@@ -65,3 +67,15 @@ class AreaAdmin(admin.ModelAdmin):
 @admin.register(PalavraChave)
 class PalavraChaveAdmin(admin.ModelAdmin):
     search_fields = ('nome',)
+
+
+@admin.register(Aluno)
+class AlunoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'email')
+    search_fields = ('nome', 'email')
+
+
+@admin.register(TFC)
+class TFCAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'ano_letivo')
+    search_fields = ('titulo', 'resumo')
