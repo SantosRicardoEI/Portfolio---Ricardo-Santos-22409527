@@ -22,9 +22,11 @@ class EvidenciaMakingOfInline(admin.StackedInline):
     model = EvidenciaMakingOf
     extra = 1
 
+
 class ImagemProjetoInline(admin.StackedInline):
     model = ImagemProjeto
     extra = 1
+
 
 @admin.register(MakingOf)
 class MakingOfAdmin(admin.ModelAdmin):
@@ -32,6 +34,12 @@ class MakingOfAdmin(admin.ModelAdmin):
     search_fields = ('entidade', 'titulo', 'descricao_processo')
     list_filter = ('entidade', 'data_registo')
     inlines = [EvidenciaMakingOfInline]
+
+@admin.register(EvidenciaMakingOf)
+class EvidenciaMakingOfAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'making_of', 'data_upload')
+    search_fields = ('titulo', 'descricao')
+
 
 @admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
@@ -48,6 +56,7 @@ class ProfessorAdmin(admin.ModelAdmin):
     list_display = ('nome', 'email', 'pagina_pessoal')
     search_fields = ('nome', 'email')
 
+
 @admin.register(UnidadeCurricular)
 class UnidadeCurricularAdmin(admin.ModelAdmin):
     list_display = ('nome', 'sigla', 'ects')
@@ -59,6 +68,7 @@ class OfertaUCAdmin(admin.ModelAdmin):
     list_display = ('unidade_curricular', 'curso', 'ano_letivo')
     list_filter = ('curso', 'ano_letivo')
     search_fields = ('unidade_curricular__nome', 'curso__nome')
+
 
 @admin.register(Tecnologia)
 class TecnologiaAdmin(admin.ModelAdmin):
@@ -88,6 +98,7 @@ class TFCAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'ano_letivo')
     search_fields = ('titulo', 'resumo')
 
+
 @admin.register(Projeto)
 class ProjetoAdmin(admin.ModelAdmin):
     list_display = ('nome', 'tipo', 'estado', 'oferta_uc')
@@ -95,10 +106,12 @@ class ProjetoAdmin(admin.ModelAdmin):
     search_fields = ('nome', 'descricao_curta', 'descricao_longa')
     inlines = [ImagemProjetoInline]
 
+
 @admin.register(ImagemProjeto)
 class ImagemProjetoAdmin(admin.ModelAdmin):
     list_display = ('projeto', 'legenda')
     search_fields = ('projeto__nome', 'legenda')
+
 
 @admin.register(Competencia)
 class CompetenciaAdmin(admin.ModelAdmin):

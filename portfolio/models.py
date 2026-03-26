@@ -193,6 +193,24 @@ class Projeto(models.Model):
         related_name='projetos'
     )
 
+    areas = models.ManyToManyField(
+        Area,
+        related_name='projetos',
+        blank=True
+    )
+
+    palavras_chave = models.ManyToManyField(
+        PalavraChave,
+        related_name='projetos',
+        blank=True
+    )
+
+    competencias = models.ManyToManyField(
+        'Competencia',
+        related_name='projetos_relacionados',
+        blank=True
+    )
+
     tecnologias = models.ManyToManyField(
         Tecnologia,
         related_name='projetos',
@@ -225,11 +243,6 @@ class Competencia(models.Model):
 
     tecnologias = models.ManyToManyField(
         Tecnologia,
-        related_name='competencias',
-        blank=True
-    )
-    projetos = models.ManyToManyField(
-        Projeto,
         related_name='competencias',
         blank=True
     )
