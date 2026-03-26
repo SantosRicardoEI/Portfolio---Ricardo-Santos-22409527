@@ -1,8 +1,34 @@
 from django.contrib import admin
 from .models import (
     Curso,
+    AnoLetivo,
+    Professor,
+    MakingOf,
+    EvidenciaMakingOf,
 )
+
+class EvidenciaMakingOfInline(admin.StackedInline):
+    model = EvidenciaMakingOf
+    extra = 1
+
+@admin.register(MakingOf)
+class MakingOfAdmin(admin.ModelAdmin):
+    list_display = ('entidade', 'titulo', 'data_registo')
+    search_fields = ('entidade', 'titulo', 'descricao_processo')
+    list_filter = ('entidade', 'data_registo')
+    inlines = [EvidenciaMakingOfInline]
 
 @admin.register(Curso)
 class CursoAdmin(admin.ModelAdmin):
     search_fields = ('nome',)
+
+
+@admin.register(AnoLetivo)
+class AnoLetivoAdmin(admin.ModelAdmin):
+    search_fields = ('nome',)
+
+
+@admin.register(Professor)
+class ProfessorAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'email', 'pagina_pessoal')
+    search_fields = ('nome', 'email')
